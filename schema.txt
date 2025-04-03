@@ -1,0 +1,68 @@
+User
+-------------------------------------------------------------------------
+- id (PK)
+- firstName (varchar Mandatory)
+- middleName (varchar Optional)
+- lastName (varchar Mandatory)
+- gender (varchar Mandatory)
+- password (varchar Mandatory)
+- createdOn (datetime Mandatory)
+- updatedOn (datetime Mandatory)
+
+Parent
+-------------------------------------------------------------------------
+- id (PK)
+- User (FK - User Model)
+- phoneNumber (integerField Mandatory)
+- email (varchar Optional)
+- createdOn (datetime Mandatory)
+- updatedOn (datetime Mandatory)
+
+Student
+-------------------------------------------------------------------------
+- id (PK)
+- User (FK - User Model)
+- admissionNumber (varchar Optional)
+- admittedOn (datetime Mandatory)
+- dateOfBirth (datetime Mandatory)
+- createdOn (datetime Mandatory)
+- updatedOn (datetime Mandatory)
+
+Teacher
+-------------------------------------------------------------------------
+- id (PK)
+- StaffNumber (varchar Optional)
+- createdOn (datetime Mandatory)
+- updatedOn (datetime Mandatory)
+
+TeacherSubject (Many to Many)
+-------------------------------------------------------------------------
+- id (PK)
+- TeacherId (FK Teacher Model)
+- SubjectId (FK Subject model)
+- createdOn (datetime Mandatory)
+- updatedOn (datetime Mandatory)
+
+Subjects
+-------------------------------------------------------------------------
+- id (PK)
+- name (varchar Mandatory)
+- createdOn (datetime Mandatory)
+- updatedOn (datetime Mandatory)
+
+Class
+-------------------------------------------------------------------------
+- id (PK)
+- className (varchar Optional)
+- createdOn (datetime Mandatory)
+- updatedOn (datetime Mandatory)
+
+classTerm
+-------------------------------------------------------------------------
+- id (PK)
+- classId (FK class Model)
+- term (varchar Mandatory)
+- year (varchar Mandatory)
+- classTeacher
+- createdOn (datetime Mandatory)
+- updatedOn (datetime Mandatory)
