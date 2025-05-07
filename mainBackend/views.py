@@ -1,17 +1,55 @@
 from datetime import datetime
+
+from django.urls import reverse
 from django.shortcuts import render 
 from django.shortcuts import redirect
+from django.contrib.auth import login
+from django.contrib.auth import authenticate
+
+from user_management.models import User
 
 def home(request):
+    print("======================================")
+    print("Home View!")
+    print("======================================")
     if request.user.is_authenticated:
-        return redirect('dashboard')  # or your named dashboard URL
+        return redirect('dashboard')
     else:
         return redirect('login')
         
-def login(request):
-    if request.method == "GET":
+def userLogin(request):
+    if request.method == 'POST':
+        password = request.POST.get('password', None)
+        identifier = request.POST.get('username', None)
+
+        try:            
+            if '@' in identifier:
+                user = User.objects.get(email=identifier)
+                authenticated_user = authenticate(request, email=user.email, password=password)                                
+                
+                if authenticated_user is not None:
+                    print(user.email)
+                    print("User Authenticated")
+                    login(request, authenticated_user)
+                    print("User Logged in")
+                    return redirect('home')
+                else:
+                    current_year = datetime.now().year
+                    context = {"current_year": current_year,"error_message": "Invalid Email or Password"}
+                    return render(request, 'authentication/login.html', context=context)
+            else:
+                current_year = datetime.now().year
+                context = {"current_year": current_year,"error_message": "Invalid Email or Password"}
+                return render(request, 'authentication/login.html', context=context)
+        except User.DoesNotExist:
+            current_year = datetime.now().year
+            context = {"current_year": current_year,"error_message": "Invalid Email or Password"}
+            return render(request, 'authentication/login.html', context=context)
+        except Exception as e:
+            current_year = datetime.now().year
+            context = {"current_year": current_year,"error_message": "Invalid Email or Password"}
+            return render(request, 'authentication/login.html', context=context)
+    else:
         current_year = datetime.now().year
-        context = {
-            "current_year": current_year,
-        }
+        context = {"current_year": current_year}
         return render(request, 'authentication/login.html', context=context)
