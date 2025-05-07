@@ -2,6 +2,7 @@ from django.urls import path
 
 from . import views
 
-urppatterns = [
-    
+app_name = 'dashboard'
+urlpatterns = [
+    path('', views.dashboardIndex, name='dashboard-index'),
 ]

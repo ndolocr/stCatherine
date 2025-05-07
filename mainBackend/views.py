@@ -8,12 +8,12 @@ from django.contrib.auth import authenticate
 
 from user_management.models import User
 
-def home(request):
-    print("======================================")
-    print("Home View!")
-    print("======================================")
+def home(request):    
     if request.user.is_authenticated:
-        return redirect('dashboard')
+        print("======================================")
+        print("Dashboard View!")
+        print("======================================")
+        return redirect('dashboard:dashboard-index')
     else:
         return redirect('login')
         
@@ -32,7 +32,7 @@ def userLogin(request):
                     print("User Authenticated")
                     login(request, authenticated_user)
                     print("User Logged in")
-                    return redirect('home')
+                    return redirect('home-view')
                 else:
                     current_year = datetime.now().year
                     context = {"current_year": current_year,"error_message": "Invalid Email or Password"}
