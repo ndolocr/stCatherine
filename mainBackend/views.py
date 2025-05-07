@@ -10,10 +10,7 @@ from user_management.models import User
 
 def home(request):    
     if request.user.is_authenticated:
-        print("======================================")
-        print("Dashboard View!")
-        print("======================================")
-        return redirect('dashboard:dashboard-index')
+        return redirect('dashboard:index')
     else:
         return redirect('login')
         
