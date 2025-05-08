@@ -1,0 +1,122 @@
+{% extends 'layout/base.html' %}
+
+{% block context %}
+<style>
+    .form-group{margin-bottom: 15px;}
+</style>
+<div class="col-md-12">
+    <div class="portlet box blue-hoki">
+        <div class="portlet-title">
+            <div class="caption">
+                <!-- <i class="fa fa-user"></i> -->
+                Create New Student Record </div>
+            <div class="tools">
+                <a href="javascript:;" class="collapse"> </a>
+                <!-- <a href="javascript:;" class="remove"> </a> -->
+            </div>
+        </div>
+        <div class="portlet-body form">
+            <!-- BEGIN FORM-->
+            <form action="" method="POST">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-body">
+
+                            <div class="form-group"> 
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="control-label">Admission Number</label> <input type="text" class="form-control" placeholder="Admission No." name="admission_number"> 
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="control-label">Adm Date</label> <input type="date" class="form-control" placeholder="Admissiondate" name="admission_date"> 
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group"> 
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="control-label">First Name</label> <input type="text" class="form-control" placeholder="First Name" name="first_name">
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="control-label">Middle Name</label> <input type="text" class="form-control" placeholder="Middle Name" name="middle_name">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group"> 
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="control-label">Last Name</label> <input type="text" class="form-control" placeholder="Last Name" name="last_name">
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="control-label">Gender</label>
+                                        <select class="form-control" name="gender">
+                                            <option>Male</option> <option>Female</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group"> 
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="control-label">Phone No.</label> <input type="text" class="form-control" placeholder="Phone No." name="phone">
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="control-label">Email</label> <input type="text" class="form-control" placeholder="Email" name="email">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-body">
+                        <div class="form-actions">
+                            <button type="submit" class="btn green">Submit</button>
+                            <button type="button" class="btn default">Cancel</button>
+                        </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                <!-- <div class="form-body">
+                    <div class="form-group">
+                        <label class="control-label">Name</label>
+                        <input type="text" class="form-control" placeholder="Enter Room Element Name" name="name">                        
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label">Element Type</label>
+                        <input type="text" class="form-control" placeholder="Enter Room Element Type" name="elementType">                        
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label">Score</label>
+                        <input type="text" class="form-control" placeholder="Enter Score" name="score">                        
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label">Description</label>
+                        <textarea class="form-control" placeholder="Enter Address" name="description"></textarea>                                          
+                    </div>
+
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="btn green">Submit</button>
+                        <button type="button" class="btn default">Cancel</button>
+                    </div>
+                </div> -->
+            </form>
+            <!-- END FORM-->
+        </div>
+    </div>
+</div>
+{% endblock %}
