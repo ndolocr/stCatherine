@@ -122,14 +122,14 @@
                     <li class="nav-item  active open">
                         <a href="javascript:;" class="nav-link nav-toggle">
                             <i class="icon-users"></i>
-                            <span class="title">User Creation</span>
+                            <span class="title">Students</span>
                             <span class="arrow"></span>
                         </a>
                         <ul class="sub-menu">
                             <li class="nav-item">
-                                <a href="" class="nav-link ">
+                                <a href="{% url 'student:view-all' %}" class="nav-link ">
                                     <i class="icon-plus"></i>
-                                    <span class="title">Create Parent</span>
+                                    <span class="title">View All</span>
                                 </a>
                             </li>
 
@@ -139,13 +139,7 @@
                                     <span class="title">Create Student</span>
                                 </a>
                             </li>                            
-
-                            <li class="nav-item">
-                                <a href="" class="nav-link ">
-                                    <i class="icon-plus"></i>
-                                    <span class="title">Create Teacher</span>
-                                </a>
-                            </li>                                                                                
+                                                                                                           
                         </ul>
                     </li>
                                        
