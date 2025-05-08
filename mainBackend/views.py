@@ -47,6 +47,9 @@ def userLogin(request):
             context = {"current_year": current_year,"error_message": "Invalid Email or Password"}
             return render(request, 'authentication/login.html', context=context)
     else:
+        if request.user.is_authenticated:            
+            return redirect('dashboard:index')
+
         current_year = datetime.now().year
         context = {"current_year": current_year}
         return render(request, 'authentication/login.html', context=context)

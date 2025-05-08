@@ -6,5 +6,8 @@ from django.contrib.auth.decorators import login_required
 @login_required(login_url='login')
 def dashboardIndex(request):
     user = request.user
-    context = {"user": user}
+    context = {
+        "user": user,
+        "title": "Dashboard"
+               }
     return  render(request, 'dashboard/index.html', context=context)
