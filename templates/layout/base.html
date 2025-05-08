@@ -134,7 +134,7 @@
                             </li>
 
                             <li class="nav-item">
-                                <a href="" class="nav-link ">
+                                <a href="{% url 'student:create' %}" class="nav-link ">
                                     <i class="icon-plus"></i>
                                     <span class="title">Create Student</span>
                                 </a>
@@ -341,12 +341,12 @@
                 <div class="page-bar">
                     <ul class="page-breadcrumb">
                         <li>
-                            <a href="{% url 'dashboard:index' %}">{{title}}</a>
+                            <a href="">{{title}}</a>
                             <i class="fa fa-circle"></i>
                         </li>
-                        <!-- <li>
-                            <span>Form Stuff</span>
-                        </li> -->
+                        <li>
+                            <span>{{subtitle}}</span>
+                        </li>
                     </ul>
                 </div>
                 <!-- END PAGE BAR -->
