@@ -58,14 +58,14 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserModuleManager()
 
 class Student(models.Model):    
-    admittedOn = models.DateField(blank=True, null=True)
-    admissionNumber = models.CharField(max_length=255, blank=True, null=True)
+    admitted_on = models.DateField(blank=True, null=True)
+    admission_number = models.CharField(max_length=255, blank=True, null=True)
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     
-class Teacher(models.Model):
-    dateJoined = models.DateField(blank=True, null=True)
-    StaffNumber = models.CharField(max_length=255, blank=True, null=True)
+class Staff(models.Model):
+    date_joined = models.DateField(blank=True, null=True)
+    staff_number = models.CharField(max_length=255, blank=True, null=True)
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
