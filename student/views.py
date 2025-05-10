@@ -4,8 +4,8 @@ from django.shortcuts import redirect
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.decorators import login_required
 
+from student.models import Student
 from user_management.models import User
-from user_management.models import Student
 
 from utils.form_validation import validate_date
 from utils.form_validation import validate_name
