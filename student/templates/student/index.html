@@ -29,10 +29,10 @@
                         {% for record in data %}
                         <tr>
                             <td> {{ forloop.counter }} </td>
-                            <td> {{ record.admissionNumber }} </td>
-                            <td> {{ record.admittedOn }} </td>
-                            <td> {{ record.first_name }} {{ record.last_name }} </td>
-                            <td> {{ record.gender }} </td>
+                            <td> {{ record.admission_number }} </td>
+                            <td> {{ record.admitted_on }} </td>
+                            <td> {{ record.user.first_name }} {{ record.user.last_name }} </td>
+                            <td> {{ record.user.gender }} </td>
                             <td style="text-align: center;"> <a href=""> <i class="fa fa-edit" aria-hidden="true"></i> </a> </td>
                         </tr>
                         {% endfor %}
