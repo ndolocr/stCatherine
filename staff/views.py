@@ -1,8 +1,11 @@
+from datetime import datetime
+
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 
 from staff.models import StaffType
+from audit_trail.models import StaffTypeAuditTrail
 
 from utils.form_validation import validate_name
 
@@ -62,12 +65,38 @@ def create_staff_type(request):
                 "error_message": "Invalid Staff Type Name!"
             }
             return render(request, 'staff/create_staff_type.html', context)
-        
-        # Create Staff Type
-        staff_type = StaffType.objects.create(
-            name = name,
-            created_by = request.user,
-        )
+                
+        try:
+            # Saving Staff Type record
+            staff_type = StaffType.objects.create(name = name,created_by = request.user)
+            try:
+                # Saving Audit Trail
+                audit_trial = StaffTypeAuditTrail.objects.create(
+                    action = "Create",
+                    staff_type = staff_type,
+                    action_by = request.user,
+                    description = f"Staff Type Record with name {name} created by {request.user} on {datetime.now()}"
+                )
+            except Exception as e:
+                context = {
+                    "title": "Staff Type",
+                    "subtitle": "Create",
+                    "staff_type_open":"open",
+                    "staff_type_active":"active",
+                    "error_message": "Error experinced while saving Audit Trail for Staff Type"
+                }
+                return render(request, "staff/create_staff_type.html", context)
+        except Exception as e:
+            context = {
+                "title": "Staff Type",
+                "subtitle": "Create",
+                "staff_type_open":"open",
+                "staff_type_active":"active",
+                "error_message": "Error experinced while saving Staff Type Record"
+            }
+            return render(request, "staff/create_staff_type.html", context)
+
+
 
         return redirect('staff:view-all-staff-type')
 
