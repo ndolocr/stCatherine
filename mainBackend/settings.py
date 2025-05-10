@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'parent',
     'student',    
     'dashboard',
+    'student_level',
     'user_management',
 ]
 
