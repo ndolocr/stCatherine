@@ -23,15 +23,17 @@
                             <th> # </th>
                             <th> Name </th>
                             <th> Created By </th>
+                            <th></th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for record in records %}
-                        <tr>
                             <td> {{ forloop.counter }} </td>
                             <td> {{ record.name }} </td>
                             <td> {{ record.created_by }} </td>                            
                             <td style="text-align: center;"> <a href="{% url 'staff:update-staff-type' record.id %}"> <i class="fa fa-edit" aria-hidden="true"></i> </a> </td>
+                            <td style="text-align: center;"> <a href="{% url 'staff:update-staff-type' record.id %}"> <i class="fa fa-hdd-o" aria-hidden="true"></i> </a> </td>
                         </tr>
                         {% endfor %}
                         
