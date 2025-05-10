@@ -1,0 +1,62 @@
+{% extends 'layout/base.html' %}
+
+{% block context %}
+<style>
+    .form-group{margin-bottom: 15px;}
+</style>
+<div class="col-md-12">
+    <div class="portlet box red">
+        <div class="portlet-title">
+            <div class="caption">Update Staff Type Record </div>
+
+            <div class="tools">
+                <a style="color: #FFF;" href="javascript:;" class="collapse"> <i class="fa fa-compress"></i> </a>                
+            </div>
+        </div>
+        <div class="portlet-body form">
+            <!-- BEGIN FORM-->
+             {% if record %}
+            <form action="{% url 'staff:update-staff-type' record.id %}" method="POST">
+                {% csrf_token %}            
+                <div class="row">
+
+                    {% if error_message %}
+                    <div class="col-md-12"><br><div class="alert alert-danger" role="alert">{{error_message}}</div></div>
+                    {% endif %}
+
+                    <div class="col-md-12">
+                        <div class="form-body">
+
+                            <div class="form-group"> 
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label class="control-label">Name</label> <input type="text" class="form-control" value="{{record.name}}" placeholder="Name" name="name"> 
+                                    </div>                                    
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-body">
+                        <div class="form-actions">
+                            <button type="submit" class="btn green">Submit</button>
+                            <button type="button" class="btn default">Cancel</button>
+                        </div>
+                        </div>
+                    </div>
+                    
+                </div>
+               
+            </form>
+            {% else %}
+                {% if error_message %}
+                    <div class="row"><div class="col-md-12"><br><div class="alert alert-danger" role="alert">{{error_message}}</div></div></div>
+                {% endif %}
+            {% endif %}
+            <!-- END FORM-->
+        </div>
+    </div>
+</div>
+{% endblock %}
