@@ -120,6 +120,54 @@
                         <h3 class="uppercase">Menu</h3>
                     </li>
 
+                    <li class="nav-item {{staff_type_active}} {{staff_type_open}}">
+                        <a href="javascript:;" class="nav-link nav-toggle">
+                            <i class="icon-check"></i>
+                            <span class="title">Staff Type</span>
+                            <span class="arrow"></span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li class="nav-item">
+                                <a href="{% url 'staff:view-all-staff-type' %}" class="nav-link ">
+                                    <i class="icon-plus"></i>
+                                    <span class="title">View All</span>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="{% url 'staff:create-staff-type' %}" class="nav-link ">
+                                    <i class="icon-plus"></i>
+                                    <span class="title">Create Staff</span>
+                                </a>
+                            </li>                            
+                                                                                                           
+                        </ul>
+                    </li>
+
+                    <li class="nav-item {{parent_active}} {{parent_open}}">
+                        <a href="javascript:;" class="nav-link nav-toggle">
+                            <i class="icon-pencil"></i>
+                            <span class="title">Staff</span>
+                            <span class="arrow"></span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li class="nav-item">
+                                <a href="{% url 'student:view-all' %}" class="nav-link ">
+                                    <i class="icon-plus"></i>
+                                    <span class="title">View All</span>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="{% url 'student:create' %}" class="nav-link ">
+                                    <i class="icon-plus"></i>
+                                    <span class="title">Create Staff</span>
+                                </a>
+                            </li>                            
+                                                                                                           
+                        </ul>
+                    </li>
+
                     <li class="nav-item {{parent_active}} {{parent_open}}">
                         <a href="javascript:;" class="nav-link nav-toggle">
                             <i class="icon-user"></i>
@@ -137,7 +185,7 @@
                             <li class="nav-item">
                                 <a href="{% url 'student:create' %}" class="nav-link ">
                                     <i class="icon-plus"></i>
-                                    <span class="title">Create Student</span>
+                                    <span class="title">Create Parent</span>
                                 </a>
                             </li>                            
                                                                                                            

@@ -1,0 +1,10 @@
+from django.urls import path
+
+from staff import views
+
+app_name = 'staff'
+
+urlpatterns = [
+    path('type', views.view_all_staff_type, name='view-all-staff-type'),
+    path('type/create', views.create_staff_type, name='create-staff-type'),
+]
