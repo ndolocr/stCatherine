@@ -106,9 +106,9 @@
                                 <hr>
                                 <div class="col-md-6">
                                     {% if record.user.is_active %}
-                                        <a style="text-align: right;" class="btn red" href="{% url 'staff:deactivate' first_user_id %}" > <i class="fa fa-times" aria-hidden="true"></i> <small>Deactivate</small> </a>
+                                        <a style="text-align: right;" class="btn red" href="{% url 'staff:deactivate' record.id %}" > <i class="fa fa-times" aria-hidden="true"></i> <small>Deactivate</small> </a>
                                     {% else %}
-                                        <a style="text-align: right;" class="btn green" href="{% url 'staff:activate' first_user_id %}" > <i class="fa fa-play" aria-hidden="true"></i> <small>Activate</small> </a>
+                                        <a style="text-align: right;" class="btn green" href="{% url 'staff:activate' record.id %}" > <i class="fa fa-play" aria-hidden="true"></i> <small>Activate</small> </a>
                                     {% endif %}
                                 </div>
 
