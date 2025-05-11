@@ -23,6 +23,8 @@
                             <th> # </th>
                             <th> Name </th>
                             <th> Created By </th>
+                            <th>Status</th>
+                            <th></th>
                             <th></th>
                             <th></th>
                         </tr>
@@ -31,9 +33,11 @@
                         {% for record in records %}
                             <td> {{ forloop.counter }} </td>
                             <td> {{ record.name }} </td>
-                            <td> {{ record.created_by }} </td>                            
+                            <td> {{ record.created_by }} </td>
+                            <td> {{record.deleted_status}} </td>                            
                             <td style="text-align: center;"> <a href="{% url 'staff:update-staff-type' record.id %}"> <i class="fa fa-edit" aria-hidden="true"></i> </a> </td>
-                            <td style="text-align: center;"> <a href="{% url 'staff:update-staff-type' record.id %}"> <i class="fa fa-hdd-o" aria-hidden="true"></i> </a> </td>
+                            <td style="text-align: center;"> <a href="{% url 'staff:delete-staff-type' record.id %}"> <i class="fa fa-trash" aria-hidden="true"></i> </a> </td>
+                            <td style="text-align: center;"> <a href="{% url 'audit:view-audit-for-staff-type' record.id %}"> <i class="fa fa-hdd-o" aria-hidden="true"></i> </a> </td>
                         </tr>
                         {% endfor %}
                         

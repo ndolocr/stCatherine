@@ -13,7 +13,7 @@ from utils.form_validation import validate_name
 @login_required(login_url='login')
 def view_all_staff_type(request):
     try:
-        records = StaffType.objects.all()
+        records = StaffType.objects.all().order_by('-created_on')
 
         context = {
             "records": records,
@@ -75,7 +75,7 @@ def create_staff_type(request):
                     action = "Create",
                     staff_type = staff_type,
                     action_by = request.user,
-                    description = f"Staff Type Record with name {name} created by {request.user} on {datetime.now()}"
+                    description = f"Staff Type Record with name <b>{name}</b> created."
                 )
             except Exception as e:
                 context = {
@@ -131,7 +131,7 @@ def update_staff_type(request, id):
             print("=================================================")
             print("Data Validation Results!")
             print("=================================================")
-            print(f"Email Validation --> {validate_name(name)}")
+            print(f"Name Validation --> {validate_name(name)}")
         
             if not name or not validate_name(name):
                 context = {
@@ -144,15 +144,45 @@ def update_staff_type(request, id):
                 return render(request, 'staff/update_staff_type.html', context)
         
             # Update Staff Type
+            original_name = record.name
+            print(f"Original Name --> {original_name}")
             record.name = name
             record.save()
-        
+            print(f"Saved Name Record --> {record}")
+            try:
+                # Saving Audit Trail
+                audit_trial = StaffTypeAuditTrail.objects.create(
+                    action = "Update",
+                    staff_type = record,
+                    action_by = request.user,
+                    description = f"<b>{original_name}</b> updated to <b>{name}</b>"
+                )
+            except Exception as e:
+                context["error_message"]= f"Error saving Audit Trail --> {e}"
+                return render(request, 'staff/update_staff_type.html', context)
             return redirect('staff:view-all-staff-type')
         else:
             print(f"RECORD NOT FOUND -----> {record}")         
             context["error_message"]= f"Record with ID ({id}) NOT FOUND"
             return render(request, 'staff/update_staff_type.html', context)
 
+def delete_staff_type(request, id):
+    record = get_staff_type_record(id)
+    if record:
+        record_name = record.name
+        record.deleted_status = True
+        record.save()
+        # record.delete()
+        
+        # Saving Audit Trail
+        audit_trial = StaffTypeAuditTrail.objects.create(
+            action = "Delete",
+            staff_type = record,
+            action_by = request.user,
+            description = f"<b>{record_name}</b> deleted successfully!"
+        )
+        return redirect('staff:view-all-staff-type')
+    
 
 def get_staff_type_record(id):
     try:
