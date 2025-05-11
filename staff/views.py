@@ -411,15 +411,16 @@ def create_staff(request):
 
             # Create Audit trail for creating staff record
             staff_record = f"""
+            <b> <u>Create Staff Record</u> </b> <br>
             Last Name: {last_name}     | Email:{email}         | Phone: {phone}     | Is Active {user.is_active}
             First Name: {first_name}   | Gender: {gender}      | Address: {address} | Is Staff: {user.is_staff}
             Middle Name: {middle_name} | Username: {username}  | Town: {town}
-            <hr>       
-            ID Num: {identification_document_number} 
-            ID Doc: {identification_document}
-            Sfatt Type: {staff_type_names}
-            <hr>
-            About <br>
+            <br>   
+            ID Num: {identification_document_number} |
+            ID Doc: {identification_document} |
+            Sfatt Type: {staff_type_names} |
+            <br>
+            <b>About</b> <br>
             {about}
             """
             try:
@@ -477,9 +478,11 @@ def view_staff(request, id):
         
         date_joined= record.date_joined.strftime('%Y-%m-%d') if record.date_joined else ''
         
-        context = {            
+        context = {                     
             "record":record,
             "next_id": next_id,
+            "staff_open":"open",
+            "staff_active":"active",
             "previous_id": previous_id,
             "date_joined": date_joined,
             "last_user_id": last_user_id,
@@ -551,15 +554,16 @@ def view_staff(request, id):
 
         # Create Audit trail for creating staff record
         staff_record = f"""
+        <b> <u>Updating Staff Record</u> </b> <br>
         Last Name: {last_name}     | Email:{email}         | Phone: {phone}     
         First Name: {first_name}   | Gender: {gender}      | Address: {address} 
         Middle Name: {middle_name} | Town: {town}
-        <hr>       
-        ID Num: {identification_document_number} 
-        ID Doc: {identification_document}
-        Sfatt Type: {staff_type_names}
-        <hr>
-        About <br>
+        <br>       
+        ID Num: {identification_document_number} | 
+        ID Doc: {identification_document} | 
+        Sfatt Type: {staff_type_names} | 
+        <br>
+        <b>About</b> <br>
         {about}
         """            
         audit_trail = StaffAuditTrail.objects.create(
@@ -578,16 +582,20 @@ def activate_staff(request, id):
         user = staff.user
 
         user.is_active = True
-        user.save
-
+        user.save()
+        record = f"""
+            <b>Activating Staff</b> <br>
+            Staff Name - {staff.user.first_name} {staff.user.last_name} | <br>
+            Staff Number - {staff.staff_number}
+        """
         audit_trail = StaffAuditTrail.objects.create(
             staff = staff,
             action = "Activate",
             action_by = request.user,
-            description = "Activating Staff"
+            description = record
         )
 
-        return redirect('staff:view-staff', id)
+        return redirect('staff:view-staff', staff.id)
     except Exception as e:
         print(f"Error activating sfatt --> {e}")
 
@@ -598,15 +606,19 @@ def deactivate_staff(request, id):
         user = staff.user
 
         user.is_active = False
-        user.save
-
+        user.save()
+        record = f"""
+            <b>Deactivating Staff</b> <br>
+            Staff Name - {staff.user.first_name} {staff.user.last_name} | <br>
+            Staff Number - {staff.staff_number}
+        """
         audit_trail = StaffAuditTrail.objects.create(
             staff = staff,
             action = "Deactivate",
             action_by = request.user,
-            description = "Deactivating Staff"
+            description = record
         )
 
-        return redirect('staff:view-staff', id)
+        return redirect('staff:view-staff', staff.id)
     except Exception as e:
         print(f"Error activating sfatt --> {e}")
