@@ -4,10 +4,14 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 
+from staff.models import Staff
 from staff.models import StaffType
+
 from audit_trail.models import StaffTypeAuditTrail
 
 from utils.form_validation import validate_name
+from utils.form_validation import validate_email
+from utils.form_validation import validate_phone_num
 
 # Create your views here.
 @login_required(login_url='login')
@@ -182,6 +186,7 @@ def update_staff_type(request, id):
             context["error_message"]= f"Record with ID ({id}) NOT FOUND"
             return render(request, 'staff/update_staff_type.html', context)
 
+@login_required(login_url='login')
 def delete_staff_type(request, id):
     record = get_staff_type_record(id)
     if record:
@@ -198,7 +203,6 @@ def delete_staff_type(request, id):
             description = f"<b>{record_name}</b> deleted successfully!"
         )
         return redirect('staff:view-all-staff-type')
-    
 
 def get_staff_type_record(id):
     try:
@@ -213,3 +217,189 @@ def get_staff_type_record(id):
         print(f"Error getting record --> {e}!")
         print("=================================================")
         return False
+
+# Staff Record
+@login_required(login_url='login')
+def view_all(request):
+    try:
+        records = Staff.objects.all().order_by('-created_on')
+
+        context = {
+            "records": records,
+            "title": "Staff",
+            "subtitle": "View All",
+            "staff_open":"open",
+            "staff_active":"active"
+        }
+    except Exception as e:
+        context = {
+            "title": "Staff",
+            "subtitle": "View All",
+            "staff_open":"open",
+            "staff_active":"active",
+            "error_message": "Unable to retrieve Staff records!"
+        }
+
+    return render(request, 'staff/view_all.html', context)
+    
+@login_required(login_url='login')
+def create_staff(request):
+    try:
+        last_staff_number = Staff.objects.order_by('-id').first()
+        new_staff_number = int(last_staff_number.staff_number) + 1
+    except Exception as e:
+        print("==========================================")
+        print(f"Error getting student record to generate next admission number --> {last_staff_number}")
+        print("==========================================")
+        new_staff_number = 1
+
+        print("==========================================")
+        print(f"Last Addmitted student --> {last_staff_number}")
+        print(f"Their Admission Number --> {new_staff_number}")
+        print("==========================================")
+
+    try:
+        staff_type_records = StaffType.objects.all().order_by('name')
+    except Exception as e:
+        context = {
+            "title": "Staff",
+            "subtitle": "Create",
+            "staff_open":"open",
+            "staff_active":"active",
+            "error_message": "Staff Type records need to be created first."
+        }
+        return render(request, "staff/create_staff.html", context)
+    
+    if request.method =="GET":        
+        
+        context = {
+            "title": "Staff",
+            "subtitle": "Create",
+            "staff_open":"open",
+            "staff_active":"active",
+            "new_staff_number": new_staff_number,
+            "staff_type_records": staff_type_records
+        }
+        return render(request, "staff/create_staff.html", context)
+    elif request.method =="POST":        
+        town = request.POST.get('town', None)
+        phone = request.POST.get('phone', None)
+        email = request.POST.get('email', None)        
+        address = request.POST.get('address', None)
+        last_name = request.POST.get('last_name', None)
+        first_name = request.POST.get('first_name', None)        
+        date_joined = request.POST.get('date_joined', None)
+        middle_name = request.POST.get('middle_name', None)
+        staff_number = request.POST.get('staff_number', None)
+        staff_type = request.POST.getlist('staff_type', None)
+        identification_document = request.POST.get('identification_document', None)
+        identification_document_number = request.POST.get('identification_document_number', None)
+
+        print("==============================================================")
+        print(f"town --> {town}")
+        print(f"phone --> {phone}")
+        print(f"email --> {email}")
+        print(f"address --> {address}")
+        print(f"last_name --> {last_name}")
+        print(f"first_name --> {first_name}")
+        print(f"staff_type --> {staff_type}")
+        print(f"date_joined --> {date_joined}")
+        print(f"middle_name --> {middle_name}")
+        print(f"staff_number --> {staff_number}")
+        print(f"identification_document --> {identification_document}")
+        print(f"identification_document_number --> {identification_document_number}")        
+        print("==============================================================")
+        
+        # Validation
+        # town
+        context = {
+            "title": "Staff",
+            "subtitle": "Create",
+            "staff_open":"open",
+            "staff_active":"active",
+            "new_staff_number": new_staff_number,
+            "staff_type_records": staff_type_records,
+
+            # "town": town,
+            # "phone": phone,
+            # "email": email,
+            # "address": address,
+            # "last_name": last_name,
+            # "first_name": first_name,
+            # "date_joined": date_joined,
+            # "middle_name": middle_name,
+            # "staff_number": staff_number,
+            # "identification_document": identification_document,
+            # "identification_document_number": identification_document_number,
+        }
+        
+        if not town or not validate_name(town):
+            context["form_error"] = "Invalid town"
+            return render(request, "staff/create_staff.html", context)
+        
+        if not phone or not validate_phone_num(phone):
+            context["form_error"] = "Invalid Phone Number. Phone No. should be 12 digits (254 712 345 678)"
+            return render(request, "staff/create_staff.html", context)
+        
+        if not validate_email(email):
+            context["form_error"] = "Invalid email"
+            return render(request, "staff/create_staff.html", context)
+        
+        if not last_name or not validate_name(last_name):
+            context["form_error"] = "Invalid last name"
+            return render(request, "staff/create_staff.html", context)
+        
+        if not first_name or not validate_name(first_name):
+            context["form_error"] = "Invalid first name"
+            return render(request, "staff/create_staff.html", context)
+        
+        if middle_name:
+            if not validate_name(middle_name):
+                context["form_error"] = "Invalid first name"
+                return render(request, "staff/create_staff.html", context)
+            
+        if not date_joined:
+            context["form_error"] = "Employment date required"
+            return render(request, "staff/create_staff.html", context)
+        
+        if not identification_document:
+            context["form_error"] = "Identification document required"
+            return render(request, "staff/create_staff.html", context)
+        
+        if not identification_document_number:
+            context["form_error"] = "Identification document number required"
+            return render(request, "staff/create_staff.html", context)
+            
+        # Create Staff Information
+        try:
+            staff = Staff.objects.create(
+                town = town,
+                phone = phone,
+                email = email,
+                address = address,
+                last_name = last_name,
+                first_name = first_name,
+                date_joined = date_joined,
+                middle_name = middle_name,
+                staff_number = staff_number,
+                staff_type = staff_type,
+                identification_document = identification_document,
+                identification_document_number = identification_document_number,
+            )
+
+            # redirect to function to view all staff
+        except Exception as e:
+            print("==========================================")
+            print(f"The following error occured while saving staff record. --> {e}")
+            print("==========================================")
+            context = {
+                "title": "Staff",
+                "subtitle": "Create",
+                "staff_open":"open",
+                "staff_active":"active",
+                "new_staff_number": new_staff_number,
+                "staff_type_records": staff_type_records,
+                "form_error": "Error occured while saving staff information."
+            }
+
+            return render(request, "staff/create_staff.html", context)

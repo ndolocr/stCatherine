@@ -22,8 +22,7 @@ class Staff(models.Model):
     class Meta:
         db_table = 'staff'
     
-    date_joined = models.DateField(blank=True, null=True)
-    id_number = models.CharField(max_length=255, blank=True, null=True)  
+    date_joined = models.DateField(blank=True, null=True)    
     staff_number = models.CharField(max_length=255, blank=True, null=True)
     staff_types = models.ManyToManyField(StaffType, related_name='staff_type_members')
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='staff_user')
