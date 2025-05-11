@@ -6,7 +6,7 @@
     <div class="portlet box blue-hoki">
         <div class="portlet-title">
             <div class="caption">
-                <i class="fa fa-cogs"></i>Audit Trail for: - <small><b>{{staff_type.name}} Staff</b></small> </div>
+                <i class="fa fa-cogs"></i>Staff Type - Audit Trail </div>
             <div class="tools">
                 <a href="javascript:;" class="collapse"> </a>                
                 <!-- <a href="javascript:;" class="remove"> </a> -->
@@ -18,8 +18,8 @@
             {% else %}
             <div class="table-responsive">
                 <div data-simplebar>
-                        {% for record in records%}
-                            
+                     
+                        {% for record in records%}                            
                             {% if record.action == "Update" %}
                                 <div class="alert alert-primary" role="alert">
                                     <div class="row">
@@ -76,7 +76,7 @@
                                 </div>
                                 <hr>
                             {% endif %}
-                        {% endfor %}                   
+                        {% endfor %}                        
             </div>
             {% endif %}
         </div>

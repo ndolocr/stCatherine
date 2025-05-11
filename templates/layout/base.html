@@ -120,7 +120,7 @@
                         <h3 class="uppercase">Menu</h3>
                     </li>
 
-                    <li class="nav-item {{staff_type_active}} {{staff_type_open}}">
+                    <!-- <li class="nav-item {{staff_type_active}} {{staff_type_open}}">
                         <a href="javascript:;" class="nav-link nav-toggle">
                             <i class="icon-check"></i>
                             <span class="title">Staff Type</span>
@@ -142,9 +142,9 @@
                             </li>                            
                                                                                                            
                         </ul>
-                    </li>
+                    </li> -->
 
-                    <li class="nav-item {{parent_active}} {{parent_open}}">
+                    <li class="nav-item {{staff_active}} {{staff_open}}">
                         <a href="javascript:;" class="nav-link nav-toggle">
                             <i class="icon-pencil"></i>
                             <span class="title">Staff</span>
@@ -163,9 +163,40 @@
                                     <i class="icon-plus"></i>
                                     <span class="title">Create Staff</span>
                                 </a>
-                            </li>                            
+                            </li> 
+                            
+                            <li class="nav-item {{staff_active}} {{staff_open}}">
+                                <a href="javascript:;" class="nav-link nav-toggle">
+                                    <i class="icon-check"></i>
+                                    <span class="title">Staff Type</span>
+                                    <span class="arrow"></span>
+                                </a>
+                                <ul class="sub-menu">
+                                    <li class="nav-item">
+                                        <a href="{% url 'staff:view-all-staff-type' %}" class="nav-link ">
+                                             <i class="fa fa-folder-open" aria-hidden="true"></i>
+                                            <span class="title">View All</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="nav-item">
+                                        <a href="{% url 'staff:create-staff-type' %}" class="nav-link ">
+                                            <i class="icon-plus"></i>
+                                            <span class="title">Create Staff</span>
+                                        </a>
+                                    </li> 
+                                    
+                                    <li class="nav-item">
+                                        <a href="{% url 'audit:view-audit-for-all-staff-type' %}" class="nav-link ">
+                                            <i class="fa fa-briefcase" aria-hidden="true"></i>
+                                            <span class="title">Audit Trail</span>
+                                        </a>
+                                    </li> 
+                                                                                                                
+                                </ul>
+                    </li>
                                                                                                            
-                        </ul>
+                        </ul>                         
                     </li>
 
                     <li class="nav-item {{parent_active}} {{parent_open}}">

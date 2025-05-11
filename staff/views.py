@@ -19,6 +19,8 @@ def view_all_staff_type(request):
             "records": records,
             "title": "Staff Type",
             "subtitle": "View All",
+            "staff_open":"open",
+            "staff_active":"active",
             "staff_type_open":"open",
             "staff_type_active":"active",
         }
@@ -26,6 +28,8 @@ def view_all_staff_type(request):
         context = {
             "title": "Staff Type",
             "subtitle": "View All",
+            "staff_open":"open",
+            "staff_active":"active",
             "staff_type_open":"open",
             "staff_type_active":"active",
             "error_message": "Unable to retrieve Staff Type records!"
@@ -39,6 +43,8 @@ def create_staff_type(request):
         context = {
             "title": "Staff Type",
             "subtitle": "Create",
+            "staff_open":"open",
+            "staff_active":"active",
             "staff_type_open":"open",
             "staff_type_active":"active",
         }
@@ -60,6 +66,8 @@ def create_staff_type(request):
             context = {
                 "title": "Staff Type",
                 "subtitle": "Create",
+                "staff_open":"open",
+                "staff_active":"active",
                 "staff_type_open":"open",
                 "staff_type_active":"active",
                 "error_message": "Invalid Staff Type Name!"
@@ -81,6 +89,8 @@ def create_staff_type(request):
                 context = {
                     "title": "Staff Type",
                     "subtitle": "Create",
+                    "staff_open":"open",
+                    "staff_active":"active",
                     "staff_type_open":"open",
                     "staff_type_active":"active",
                     "error_message": "Error experinced while saving Audit Trail for Staff Type"
@@ -90,6 +100,8 @@ def create_staff_type(request):
             context = {
                 "title": "Staff Type",
                 "subtitle": "Create",
+                "staff_open":"open",
+                "staff_active":"active",
                 "staff_type_open":"open",
                 "staff_type_active":"active",
                 "error_message": "Error experinced while saving Staff Type Record"
@@ -105,6 +117,8 @@ def update_staff_type(request, id):
     context = {
             "title": "Staff Type",
             "subtitle": "Update",
+            "staff_open":"open",
+            "staff_active":"active",
             "staff_type_open":"open",
             "staff_type_active":"active",
         }
@@ -137,6 +151,8 @@ def update_staff_type(request, id):
                 context = {
                     "title": "Staff Type",
                     "subtitle": "Create",
+                    "staff_open":"open",
+                    "staff_active":"active",
                     "staff_type_open":"open",
                     "staff_type_active":"active",
                     "error_message": "Invalid Staff Type Name!"
