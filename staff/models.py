@@ -8,6 +8,7 @@ class StaffType(models.Model):
     class Meta:
         db_table = 'staff_type'
 
+    deleted_status = models.BooleanField(default=False)
     name = models.CharField(max_length=255, unique=True, blank=False, null=False)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='staff_type_created_by', blank=False, null=False)
 

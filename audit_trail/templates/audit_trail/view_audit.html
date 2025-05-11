@@ -1,0 +1,141 @@
+{% extends 'layout/base.html' %}
+
+{% block context %}
+<div style=" padding: 20px"> </div>
+    <!-- BEGIN SAMPLE TABLE PORTLET-->
+    <div class="portlet box blue-hoki">
+        <div class="portlet-title">
+            <div class="caption">
+                <i class="fa fa-cogs"></i>Audit Trail for Staff Type Records </div>
+            <div class="tools">
+                <a href="javascript:;" class="collapse"> </a>                
+                <!-- <a href="javascript:;" class="remove"> </a> -->
+            </div>
+        </div>
+        <div class="portlet-body">
+            {% if error_message %}
+                <div class="row"><div class="col-md-12"><br><div class="alert alert-danger" role="alert">{{error_message}}</div></div></div>
+            {% else %}
+            <div class="table-responsive">
+                <div data-simplebar>
+                     <address class="mb-0 font-14 address-lg">
+                        {% for record in records%}
+                            
+                            {% if record.action == "Update" %}
+                                <div class="alert alert-primary" role="alert">
+                                    <div class="row">
+                                        <div class="col-md-3" style="border-right: solid 1px #9ec5fe;">
+                                            <small>
+                                                <i class="fa fa-pencil"></i> - {{record.action}} <br> 
+                                                <i class="fa fa-user"></i> - {{record.action_by}} <br>
+                                                <i class="fa fa-calendar"></i> - {{record.created_on}}
+                                            </small> 
+                                        </div>
+                                        <div class="col-md-9">
+                                            <b><u>Description</u></b> <br>
+                                            <small>{{record.description|safe}}</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                            {% endif %}
+
+                            {% if record.action == "Create" %}
+                                <div class="alert alert-success" role="alert">
+                                    <div class="row">
+                                        <div class="col-md-3" style="border-right: solid 1px #a3cfbb;">
+                                            <small>
+                                                <i class="fa fa-plus"></i> - {{record.action}} <br> 
+                                                <i class="fa fa-user"></i> - {{record.action_by}} <br>
+                                                <i class="fa fa-calendar"></i> - {{record.created_on}}
+                                            </small> 
+                                        </div>
+                                        <div class="col-md-9">
+                                            <small><b><u>Description</u></b> <br></small>
+                                            <small>{{record.description|safe}}</small> <br>                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                            {% endif %}
+
+                            {% if record.action == "Delete" %}
+                                <div class="alert alert-danger" role="alert">
+                                    <div class="row">
+                                        <div class="col-md-3" style="border-right: solid 1px #f1aeb5;">
+                                            <small>
+                                                <i class="fa fa-trash"></i> - {{record.action}} <br> 
+                                                <i class="fa fa-user"></i> - {{record.action_by}} <br>
+                                                <i class="fa fa-calendar"></i> - {{record.created_on}}
+                                            </small> 
+                                        </div>
+                                        <div class="col-md-9">
+                                            <b><u>Description</u></b> <br>
+                                            <small>{{record.description|safe}}</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                            {% endif %}
+
+
+                        {% endfor %}
+                    </address>
+                        
+                        <!-- <div class="timeline-alt pb-0">
+                            {% for record in records%}
+                            <div class="timeline-item">                                                    
+                                {% if record.action == "Create"%} <i class="fa fa-plus bg-success-lighten text-success timeline-icon"></i> {% endif %} 
+                                
+                                {% if record.action == "Update"%} <i class="fa fa-forward bg-primary-lighten text-primary timeline-icon"></i> {% endif %} 
+                                
+                                {% if record.action == "Delete"%} <i class="mdi mdi-close bg-danger-lighten text-danger timeline-icon"></i> {% endif %}
+                                                                
+                                <div class="timeline-item-info">
+                                    <a href="#" class="text-info font-weight-bold mb-1 d-block">{{record.action}}</a>
+                                    <small>{{record.action_by.id}}</small>
+                                    <p class="mb-0 pb-2" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
+                                        <small class="text-muted"> <span class="font-weight-bold"> {{record.description|safe}}</span><br /> {{case.created_at}} </small>
+                                    </p>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div> -->
+                        <!-- end timeline -->
+                    <!-- </div> -->
+
+
+                <!-- {% for record in records %}
+                    {% if record.action == "Create" %}
+                        <div class="alert alert-success" role="alert">
+                            <div class="row">
+                                <div class="col-md-1"><i class="fa fa-plus"></i></div>
+                                <div class="col-md-11">{{record.description}}</div>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    {% if record.action == "Update" %}
+                        <div class="alert alert-primary" role="alert">
+                            <div class="row">
+                                <div class="col-md-12"><i class="fa fa-minus"></i> |
+                                {{record.description|safe}}</div>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    {% if record.action == "Delete" %}
+                        <div class="alert alert-danger" role="alert">
+                            <div class="row">
+                                <div class="col-md-1"><i class="fa fa-plus"></i></div>
+                                <div class="col-md-11">record.description</div>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                {% endfor %} -->
+            </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
