@@ -12,6 +12,7 @@
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" type="text/css" />
     <link href="{% static 'css/uniform.default.css' %}" rel="stylesheet" type="text/css" />
     <link href="{% static 'css/bootstrap-switch.min.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'css/bootstrap-fileinput.min.css' %}" rel="stylesheet" type="text/css" />
     <!-- END GLOBAL MANDATORY STYLES -->
     <!-- BEGIN PAGE LEVEL PLUGINS -->
     <link href="{% static 'css/daterangepicker-bs3.css' %}" rel="stylesheet" type="text/css" />
@@ -26,6 +27,7 @@
     <!-- END THEME GLOBAL STYLES -->
     <!-- BEGIN THEME LAYOUT STYLES -->
     <link href="{% static 'css/layout.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'css/profile.css' %}" rel="stylesheet" type="text/css" />
     <link href="{% static 'css/darkblue.min.css' %}" rel="stylesheet" type="text/css" id="style_color" />
     <link href="{% static 'css/blue.min.css' %}" rel="stylesheet" type="text/css" id="style_color" />
     <link href="{% static 'css/default.min.css' %}" rel="stylesheet" type="text/css" id="style_color" />
@@ -152,14 +154,14 @@
                         </a>
                         <ul class="sub-menu">
                             <li class="nav-item">
-                                <a href="{% url 'student:view-all' %}" class="nav-link ">
+                                <a href="{% url 'staff:view-all' %}" class="nav-link ">
                                     <i class="icon-plus"></i>
                                     <span class="title">View All</span>
                                 </a>
                             </li>
 
                             <li class="nav-item">
-                                <a href="{% url 'student:create' %}" class="nav-link ">
+                                <a href="{% url 'staff:create' %}" class="nav-link ">
                                     <i class="icon-plus"></i>
                                     <span class="title">Create Staff</span>
                                 </a>

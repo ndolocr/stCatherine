@@ -1,6 +1,6 @@
 import re
 from datetime import datetime
-
+ 
 def validate_name(name):
     if re.fullmatch(r'[A-Za-z]+', name):
         return True
@@ -21,7 +21,7 @@ def is_alphanumeric(value):
     return False
 
 def validate_phone_num(phone_num):
-    if re.fullmatch(r'\d{9}', phone_num) and len(phone_num)>=9:
+    if re.fullmatch(r'\d{9}', phone_num) and len(phone_num)==12:
         return True
     return False
 

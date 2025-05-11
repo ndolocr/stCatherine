@@ -1,0 +1,271 @@
+{% extends 'layout/base.html' %}
+
+{% block context %}
+<div style=" padding: 20px"> </div>
+    <!-- BEGIN SAMPLE TABLE PORTLET-->
+    <div class="portlet box blue-hoki">
+        <div class="portlet-title">
+            <div class="caption">
+                <i class="fa fa-user"></i>View Staff</div>
+            <div class="tools">
+                <a href="{% url 'staff:view-staff' first_user_id %}" > <i class="fa fa-step-backward" aria-hidden="true" style="color: #FFF;"></i> </a>
+                <a href="{% url 'staff:view-staff' previous_id %}"> <i class="fa fa-backward" aria-hidden="true" style="color: #FFF;"></i> </a>                
+                <a href="{% url 'staff:view-staff' next_id %}"> <i class="fa fa-forward" aria-hidden="true" style="color: #FFF;"></i> </a>
+                <a href="{% url 'staff:view-staff' last_user_id %}" > <i class="fa fa-step-forward" aria-hidden="true" style="color: #FFF;"></i> </a> |
+                <a href="javascript:;" class="collapse"> <i class="fa fa-compress" style="color: #FFF;"></i> </a>                
+            </div>
+        </div>
+        <div class="portlet-body" style=" background-color: #eef1f5;">
+           <div class="row">
+                <div class="col-md-12">
+
+                    <!-- BEGIN PROFILE SIDEBAR -->
+                    <div class="profile-sidebar">
+                        <!-- PORTLET MAIN -->
+                        <div class="portlet light profile-sidebar-portlet ">                                    
+                            <!-- SIDEBAR USER TITLE -->
+                            <div class="profile-usertitle">
+                                <div class="profile-usertitle-name"> {{record.user.last_name}} {{record.user.first_name}}</div>
+                                <span>
+                                    Staff No | {{record.staff_number}}
+                                    <br>
+                                    {{record.user.identification_document}} | {{record.user.identification_document_number}}
+                                    <br>
+                                    Username | {{record.user.username}}
+                                </span>
+                                <hr>
+                                    <b><u>Staff Roles</u></b>
+                                <div class="profile-usertitle-job">
+                                    
+                                    {% for staff_type in record.staff_types.all %}
+                                        {{ staff_type.name }} {% if not forloop.last %}, {% endif %}
+                                    {% empty %}
+
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <!-- END SIDEBAR USER TITLE -->
+
+                            <!-- SIDEBAR BUTTONS -->
+                            <div class="profile-userbuttons">
+                                {% if record.user.is_staff %}
+                                    <a class="btn btn green btn-sm"> <i class="fa fa-check" aria-hidden="true"></i> Staff </a>
+                                {% else %}
+                                    <a class="btn btn red btn-sm"> <i class="fa fa-times" aria-hidden="true"></i> Staff </a>
+                                {% endif %}
+
+                                {% if record.user.is_active %}
+                                    <a class="btn btn green btn-sm"> <i class="fa fa-check" aria-hidden="true"></i> Active </a>
+                                {% else %}
+                                    <a class="btn btn red btn-sm"> <i class="fa fa-times" aria-hidden="true"></i> Active </a>
+                                {% endif %}                                
+                            </div>
+                            <!-- END SIDEBAR BUTTONS -->
+
+                            <br><br>
+                        </div>
+                        <!-- END PORTLET MAIN -->
+
+
+                        <!-- PORTLET MAIN -->
+                        <div class="portlet light ">
+                            <!-- STAT -->
+                            <div class="row list-separated profile-stat">
+                                <div class="col-md-4 col-sm-4 col-xs-6">
+                                    <div class="uppercase profile-stat-title"> 37 </div>
+                                    <div class="uppercase profile-stat-text"> Teaching Experience </div>
+                                </div>
+                                <div class="col-md-4 col-sm-4 col-xs-6">
+                                    <div class="uppercase profile-stat-title"> 751 </div>
+                                    <div class="uppercase profile-stat-text"> Students Taught </div>
+                                </div>
+                                <div class="col-md-4 col-sm-4 col-xs-6">
+                                    <div class="uppercase profile-stat-title"> 4 </div>
+                                    <div class="uppercase profile-stat-text"> Subjects </div>
+                                </div>
+                            </div>
+                            <!-- END STAT -->
+                            <div>
+                                <h4 class="profile-desc-title">About {{record.user.last_name}} {{record.user.first_name}} </h4>
+                                <span class="profile-desc-text"> {{record.about}} </span>
+                                
+                            </div>
+                        </div>
+                        <!-- END PORTLET MAIN -->
+
+                        <!-- BEGIN CONTACT -->
+                         <div class="portlet light ">
+                            <div class="row">
+                                <div class="col-md-12">                                    
+                                    <i class="fa fa-user" aria-hidden="true"></i> | Created By:-  {{record.created_by}}
+                                </div>
+                                <hr>
+                                <div class="col-md-12">                                    
+                                    <i class="fa fa-calendar" aria-hidden="true"></i> | Created On:- {{record.user.created_on}}
+                                </div>
+                                <hr>
+                                <div class="col-md-6">
+                                    {% if record.user.is_active %}
+                                        <a style="text-align: right;" class="btn red" href="{% url 'staff:deactivate' first_user_id %}" > <i class="fa fa-times" aria-hidden="true"></i> <small>Deactivate</small> </a>
+                                    {% else %}
+                                        <a style="text-align: right;" class="btn green" href="{% url 'staff:activate' first_user_id %}" > <i class="fa fa-play" aria-hidden="true"></i> <small>Activate</small> </a>
+                                    {% endif %}
+                                </div>
+
+                                <div class="col-md-6">
+                                    <!-- <a style="text-align: right;" class="btn red" href="{% url 'staff:view-staff' first_user_id %}" > <i class="fa fa-trash" aria-hidden="true"></i> <small>Delete</small> </a>                                         -->
+                                </div>
+                                
+                            </div>
+                         </div>
+                         <!-- BEGIN CONTACT -->
+                    </div>
+                    <!-- END BEGIN PROFILE SIDEBAR -->
+
+
+                    <!-- BEGIN PROFILE CONTENT -->
+                    <div class="profile-content">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="portlet light ">
+                                    <div class="portlet-title tabbable-line">
+                                        
+                                        <div class="caption caption-md">
+                                            <i class="icon-user theme-font hide"></i>
+                                            <span class="caption-subject font-blue-madison bold uppercase">Profile Account</span>                                            
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="portlet-body">
+                                        <div class="tab-content">
+                                            <!-- PERSONAL INFO TAB -->
+                                            <div class="tab-pane active" id="tab_1_1">
+                                                <form role="form" action="{% url 'staff:view-staff' record.id %}" method="POST">                                                   
+                                                    {% csrf_token %}
+                                                    <input type="text" class="form-control" value="{{record.id}}" hidden name="staff_id">
+                                                    <div class="form-group"> 
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <label class="control-label"> First Name </label> <input type="text" required class="form-control" value="{{record.user.first_name}}" name="first_name">
+                                                            </div>
+
+                                                            <div class="col-md-6">
+                                                                <label class="control-label"> Middle Name </label> <input type="text" required class="form-control" value="{{record.user.middle_name}}" name="middle_name">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group"> 
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <label class="control-label"> Last Name </label> <input type="text" required class="form-control" value="{{record.user.last_name}}" name="last_name">
+                                                            </div>
+
+                                                            <div class="col-md-6">
+                                                                <label class="control-label">Gender</label>
+                                                                <select class="form-control" name="gender">
+                                                                    {% if record.user.gender == "Male" %}
+                                                                        <option value="Male">Male</option> <option value="Female">Female</option>
+                                                                    {% elif record.user.gender == "Female" %}
+                                                                        <option value="Female">Female</option> <option value="Male">Male</option>
+                                                                    {% endif %}
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group"> 
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <label class="control-label">ID Document </label> 
+                                                                <select class="form-control" name="identification_document" required>
+                                                                    <option value="{{record.user.identification_document}}">{{record.user.identification_document}}</option>
+                                                                    <option disabled></option>
+                                                                    <option value="National ID">National ID</option> 
+                                                                    <option value="Passport">Passport</option>
+                                                                    <option value="Millitary ID">Millitary ID</option>
+                                                                    <option value="Driving License">Driving License</option>
+                                                                </select>
+                                                            </div>
+
+                                                            <div class="col-md-6">
+                                                                <label class="control-label">ID Document No. </label> <input type="text" required class="form-control" value="{{record.user.identification_document_number}}" name="identification_document_number">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group"> 
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <label class="control-label">Phone No. </label> <input type="text" required class="form-control" value="{{record.user.phone}}" name="phone">
+                                                            </div>
+
+                                                            <div class="col-md-6">
+                                                                <label class="control-label">Email</label> <input type="text" class="form-control" value="{{record.user.email}}" name="email">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group"> 
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <label class="control-label">Address</label> <input type="text" class="form-control" value="{{record.user.address}}" name="address">
+                                                            </div>
+
+                                                            <div class="col-md-6">
+                                                                <label class="control-label">Town</label> <input type="text" class="form-control" value="{{record.user.town}}" name="town">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group"> 
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <label class="control-label">Employment Date </label> <input type="date" required class="form-control" value="{{date_joined}}" name="date_joined"> 
+                                                            </div>
+
+                                                            <div class="col-md-6">
+                                                                <label class="col-md-3 control-label">Staff Type </label>
+                                                                <div class="col-md-9">
+                                                                    <select multiple class="form-control" name="staff_type" required>
+                                                                        {% for record in staff_type_records %}
+                                                                            <option value="{{record.id}}" {% if record.id in assigned_types %} selected {% endif %}>
+                                                                                {{record.name}}
+                                                                            </option>
+                                                                        {% endfor %}                                                        
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>                                                        
+                                                    </div>
+                                                        
+                                                    
+                                                    <div class="form-group">
+                                                        <label class="control-label">About</label>
+                                                        <textarea class="form-control" rows="3" name="about" >{{record.about}}</textarea>
+                                                    </div>                                                    
+                                                    <hr>                                                    
+                                                    <div class="col-md-12">
+                                                        <div class="form-body">
+                                                        <div class="form-actions">
+                                                            <button type="submit" class="btn green">Update</button>                                                            
+                                                        </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <!-- END PERSONAL INFO TAB -->
+                                          
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END PROFILE CONTENT -->
+                </div>
+           </div>
+        </div>
+    </div>
+{% endblock %}

@@ -51,6 +51,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=255, blank=True, null=True)
     middle_name = models.CharField(max_length=255, blank=True, null=True)
     country_code = models.CharField(max_length=10, blank=True, null=True)
+    identification_document = models.CharField(max_length=255, blank=True, null=True)
+    identification_document_number = models.CharField(max_length=255, blank=True, null=True)
 
     username = models.CharField(max_length=255, blank=False, null=False, unique=True)
 

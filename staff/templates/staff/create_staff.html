@@ -1,0 +1,149 @@
+{% extends 'layout/base.html' %}
+
+{% block context %}
+<style>
+    .form-group{margin-bottom: 15px;}
+</style>
+<div class="col-md-12">
+    <div class="portlet box blue-hoki">
+        <div class="portlet-title">
+            <div class="caption">Create New Staff </div>
+
+            <div class="tools">
+                <a style="color: #FFF;" href="javascript:;" class="collapse"> <i class="fa fa-compress"></i> </a>                
+            </div>
+        </div>
+        <div class="portlet-body form">
+            <!-- BEGIN FORM-->
+            <form action="{% url 'staff:create' %}" method="POST">
+                {% csrf_token %}
+                <div class="row">
+
+                    {% if error_message %}
+                        <div class="col-md-12"><br><div class="alert alert-danger" role="alert">{{error_message}}</div></div>
+                    {% else %}
+                        {% if form_error %}<div class="col-md-12"><br><div class="alert alert-danger" role="alert">{{form_error}}</div></div> {% endif %}
+
+                        <div class="col-md-12">
+                            <div class="form-body">
+
+                                <div class="form-group"> 
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label class="control-label">Staff Number</label> <input type="text" class="form-control" value="{{new_staff_number}}" readonly name="staff_number"> 
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="control-label">Employment Date <span style="color: #F00;">*</span></label> <input type="date" required class="form-control" placeholder="Employment Date" name="date_joined"> 
+                                        </div>
+                                    </div>
+                                </div>
+                                                            
+                                <div class="form-group"> 
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label class="control-label">First Name <span style="color: #F00;">*</span></label> <input type="text" required class="form-control" placeholder="First Name" name="first_name">
+                                            <label class="control-label">Middle Name</label> <input type="text" class="form-control" placeholder="Middle Name" name="middle_name">
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="col-md-3 control-label">Staff Type <span style="color: #F00;">*</span> </label>
+                                            <div class="col-md-9">
+                                                <select multiple class="form-control" name="staff_type" required>
+                                                    {% for record in staff_type_records %}
+                                                        <option value="{{record.id}}">{{record.name}}</option>
+                                                    {% endfor %}                                                        
+                                                </select>
+                                            </div>
+                                        </div>                                    
+                                        
+                                    </div>
+                                </div>
+
+                                <div class="form-group"> 
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label class="control-label">Last Name <span style="color: #F00;">*</span></label> <input type="text" required class="form-control" placeholder="Last Name" name="last_name">
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="control-label">Gender</label>
+                                            <select class="form-control" name="gender">
+                                                <option value="Male">Male</option> <option value="Female">Female</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group"> 
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label class="control-label">ID Document <span style="color: #F00;">*</span> </label> 
+                                            <select class="form-control" name="identification_document" required>
+                                                <option value="National ID">National ID</option> 
+                                                <option value="Passport">Passport</option>
+                                                <option value="Millitary ID">Millitary ID</option>
+                                                <option value="Driving License">Driving License</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="control-label">ID Document No. <span style="color: #F00;">*</span></label> <input type="text" required class="form-control" placeholder="ID Document No." name="identification_document_number">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                
+
+                                <div class="form-group"> 
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label class="control-label">Phone No. <span style="color: #F00;">*</span> </label> <input type="text" required class="form-control" placeholder="254 712 345 678" name="phone">
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="control-label">Email</label> <input type="text" class="form-control" placeholder="Email" name="email">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group"> 
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label class="control-label">Address</label> <input type="text" class="form-control" placeholder="Address" name="address">
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="control-label">Town</label> <input type="text" class="form-control" placeholder="Town" name="town">
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label class="control-label">About</label><textarea class="form-control" rows="3" name="about" ></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-body">
+                            <div class="form-actions">
+                                <button type="submit" class="btn green">Submit</button>
+                                <button type="button" class="btn default">Cancel</button>
+                            </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+               
+            </form>
+            <!-- END FORM-->
+        </div>
+    </div>
+</div>
+{% endblock %}

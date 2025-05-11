@@ -114,7 +114,7 @@ def create(request):
         if not admission_number or not is_alphanumeric(admission_number):
             return render (request, 'student/create.html', context) 
         
-        password = f"{last_name}.{first_name}_{admission_number}"
+        password = f"({last_name}.{first_name})"
         username = generate_unique_username(first_name, last_name)
         
         print("=================================================")
