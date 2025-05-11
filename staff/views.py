@@ -229,7 +229,7 @@ def get_staff_type_record(id):
 @login_required(login_url='login')
 def view_all(request):
     try:
-        records = Staff.objects.all().order_by('-date_joined')
+        records = Staff.objects.all().order_by('-date_joined')        
 
         context = {
             "records": records,
@@ -292,6 +292,7 @@ def create_staff(request):
         town = request.POST.get('town', None)
         phone = request.POST.get('phone', None)
         email = request.POST.get('email', None)
+        about = request.POST.get('about', None)
         gender = request.POST.get('gender', None)
         address = request.POST.get('address', None)
         last_name = request.POST.get('last_name', None)
@@ -307,6 +308,7 @@ def create_staff(request):
         print(f"town --> {town}")
         print(f"phone --> {phone}")
         print(f"email --> {email}")
+        print(f"about --> {about}")
         print(f"gender --> {gender}")
         print(f"address --> {address}")
         print(f"last_name --> {last_name}")
@@ -328,18 +330,6 @@ def create_staff(request):
             "staff_active":"active",
             "new_staff_number": new_staff_number,
             "staff_type_records": staff_type_records,
-
-            # "town": town,
-            # "phone": phone,
-            # "email": email,
-            # "address": address,
-            # "last_name": last_name,
-            # "first_name": first_name,
-            # "date_joined": date_joined,
-            # "middle_name": middle_name,
-            # "staff_number": staff_number,
-            # "identification_document": identification_document,
-            # "identification_document_number": identification_document_number,
         }
         
         if not town or not validate_name(town):
@@ -392,7 +382,7 @@ def create_staff(request):
             user = User.objects.create(
                 town = town,
                 email=email,
-                phone=phone,
+                phone=phone,                
                 gender=gender,
                 is_staff = True,
                 is_active = True,
@@ -409,6 +399,7 @@ def create_staff(request):
 
             staff = Staff.objects.create(
                 user = user,
+                about=about,
                 created_by = request.user,               
                 date_joined = date_joined,
                 staff_number = staff_number,               
@@ -426,7 +417,10 @@ def create_staff(request):
             <hr>       
             ID Num: {identification_document_number} 
             ID Doc: {identification_document}
-            Sfatt Type {staff_type_names}
+            Sfatt Type: {staff_type_names}
+            <hr>
+            About <br>
+            {about}
             """
             try:
                 audit_trail = StaffAuditTrail.objects.create(
@@ -462,21 +456,157 @@ def create_staff(request):
             }
 
             return render(request, "staff/create_staff.html", context)
-        
+
+@login_required(login_url='login')        
 def view_staff(request, id):
     if request.method == "GET":
         record = Staff.objects.get(id=id)
         staff_type_records = StaffType.objects.all()
         assigned_types = record.staff_types.values_list('id', flat=True)
 
+        current_id = id
+        next_id = id + 1
+        previous_id = id - 1        
+        last_user_id = Staff.objects.last().id
+        first_user_id = Staff.objects.first().id  
+
+        if previous_id == 0:
+            previous_id = first_user_id
+        if next_id > last_user_id:
+            next_id = last_user_id    
+        
         date_joined= record.date_joined.strftime('%Y-%m-%d') if record.date_joined else ''
         
-        context = {
+        context = {            
             "record":record,
+            "next_id": next_id,
+            "previous_id": previous_id,
             "date_joined": date_joined,
+            "last_user_id": last_user_id,
+            "first_user_id": first_user_id,
             "assigned_types": assigned_types,
             "staff_type_records": staff_type_records,
         }
         return render(request, "staff/view_staff.html", context)
     elif request.method == "POST":
-        pass
+        
+        town = request.POST.get('town', None)        
+        phone = request.POST.get('phone', None)
+        email = request.POST.get('email', None)
+        about = request.POST.get('about', None)
+        gender = request.POST.get('gender', None)
+        address = request.POST.get('address', None)
+        staff_id = request.POST.get('staff_id', None)
+        last_name = request.POST.get('last_name', None)
+        first_name = request.POST.get('first_name', None)        
+        date_joined = request.POST.get('date_joined', None)
+        middle_name = request.POST.get('middle_name', None)
+        staff_type = request.POST.getlist('staff_type', None)
+        identification_document = request.POST.get('identification_document', None)
+        identification_document_number = request.POST.get('identification_document_number', None)
+
+        print("==============================================================")
+        print(f"town --> {town}")
+        print(f"phone --> {phone}")
+        print(f"email --> {email}")
+        print(f"about --> {about}")
+        print(f"gender --> {gender}")
+        print(f"address --> {address}")
+        print(f"last_name --> {last_name}")
+        print(f"first_name --> {first_name}")
+        print(f"staff_type --> {staff_type}")
+        print(f"date_joined --> {date_joined}")
+        print(f"middle_name --> {middle_name}")
+        print(f"identification_document --> {identification_document}")
+        print(f"identification_document_number --> {identification_document_number}")        
+        print("==============================================================")
+
+        staff = Staff.objects.get(id = staff_id)
+        print(f"Staff ----> {staff}")
+        staff.about = about
+        staff.date_joined = date_joined        
+        staff.save()
+
+        print("Staff successfully saved")
+
+        staff.staff_types.set(staff_type)
+        print("Updating Staff Types")
+        
+        user_obj = staff.user
+        user_obj.town = town
+        user_obj.email=email
+        user_obj.phone=phone
+        user_obj.gender=gender
+        user_obj.address = address
+        user_obj.last_name=last_name
+        user_obj.first_name=first_name
+        user_obj.middle_name=middle_name
+        user_obj.identification_document = identification_document
+        user_obj.identification_document_number = identification_document_number
+        user_obj.save()
+
+        print("User Object saved")
+
+        staff_type_names = list(StaffType.objects.filter(id__in=staff_type).values_list('name', flat=True))
+
+        # Create Audit trail for creating staff record
+        staff_record = f"""
+        Last Name: {last_name}     | Email:{email}         | Phone: {phone}     
+        First Name: {first_name}   | Gender: {gender}      | Address: {address} 
+        Middle Name: {middle_name} | Town: {town}
+        <hr>       
+        ID Num: {identification_document_number} 
+        ID Doc: {identification_document}
+        Sfatt Type: {staff_type_names}
+        <hr>
+        About <br>
+        {about}
+        """            
+        audit_trail = StaffAuditTrail.objects.create(
+            staff = staff,
+            action = "Update",
+            action_by = request.user,
+            description = staff_record                
+        )
+
+        return redirect('staff:view-staff', staff_id)
+
+@login_required(login_url='login')    
+def activate_staff(request, id):
+    try:
+        staff = Staff.objects.get(id=id)
+        user = staff.user
+
+        user.is_active = True
+        user.save
+
+        audit_trail = StaffAuditTrail.objects.create(
+            staff = staff,
+            action = "Activate",
+            action_by = request.user,
+            description = "Activating Staff"
+        )
+
+        return redirect('staff:view-staff', id)
+    except Exception as e:
+        print(f"Error activating sfatt --> {e}")
+
+@login_required(login_url='login')
+def deactivate_staff(request, id):
+    try:
+        staff = Staff.objects.get(id=id)
+        user = staff.user
+
+        user.is_active = False
+        user.save
+
+        audit_trail = StaffAuditTrail.objects.create(
+            staff = staff,
+            action = "Deactivate",
+            action_by = request.user,
+            description = "Deactivating Staff"
+        )
+
+        return redirect('staff:view-staff', id)
+    except Exception as e:
+        print(f"Error activating sfatt --> {e}")

@@ -8,8 +8,11 @@
             <div class="caption">
                 <i class="fa fa-user"></i>View Staff</div>
             <div class="tools">
-                <a href="javascript:;" class="collapse"> </a>                
-                <!-- <a href="javascript:;" class="remove"> </a> -->
+                <a href="{% url 'staff:view-staff' first_user_id %}" > <i class="fa fa-step-backward" aria-hidden="true" style="color: #FFF;"></i> </a>
+                <a href="{% url 'staff:view-staff' previous_id %}"> <i class="fa fa-backward" aria-hidden="true" style="color: #FFF;"></i> </a>                
+                <a href="{% url 'staff:view-staff' next_id %}"> <i class="fa fa-forward" aria-hidden="true" style="color: #FFF;"></i> </a>
+                <a href="{% url 'staff:view-staff' last_user_id %}" > <i class="fa fa-step-forward" aria-hidden="true" style="color: #FFF;"></i> </a> |
+                <a href="javascript:;" class="collapse"> <i class="fa fa-compress" style="color: #FFF;"></i> </a>                
             </div>
         </div>
         <div class="portlet-body" style=" background-color: #eef1f5;">
@@ -27,6 +30,8 @@
                                     Staff No | {{record.staff_number}}
                                     <br>
                                     {{record.user.identification_document}} | {{record.user.identification_document_number}}
+                                    <br>
+                                    Username | {{record.user.username}}
                                 </span>
                                 <hr>
                                     <b><u>Staff Roles</u></b>
@@ -82,7 +87,7 @@
                             <!-- END STAT -->
                             <div>
                                 <h4 class="profile-desc-title">About {{record.user.last_name}} {{record.user.first_name}} </h4>
-                                <span class="profile-desc-text"> Lorem ipsum dolor sit amet diam nonummy nibh dolore. </span>
+                                <span class="profile-desc-text"> {{record.about}} </span>
                                 
                             </div>
                         </div>
@@ -97,6 +102,18 @@
                                 <hr>
                                 <div class="col-md-12">                                    
                                     <i class="fa fa-calendar" aria-hidden="true"></i> | Created On:- {{record.user.created_on}}
+                                </div>
+                                <hr>
+                                <div class="col-md-6">
+                                    {% if record.user.is_active %}
+                                        <a style="text-align: right;" class="btn red" href="{% url 'staff:deactivate' first_user_id %}" > <i class="fa fa-times" aria-hidden="true"></i> <small>Deactivate</small> </a>
+                                    {% else %}
+                                        <a style="text-align: right;" class="btn green" href="{% url 'staff:activate' first_user_id %}" > <i class="fa fa-play" aria-hidden="true"></i> <small>Activate</small> </a>
+                                    {% endif %}
+                                </div>
+
+                                <div class="col-md-6">
+                                    <!-- <a style="text-align: right;" class="btn red" href="{% url 'staff:view-staff' first_user_id %}" > <i class="fa fa-trash" aria-hidden="true"></i> <small>Delete</small> </a>                                         -->
                                 </div>
                                 
                             </div>
@@ -115,7 +132,7 @@
                                         
                                         <div class="caption caption-md">
                                             <i class="icon-user theme-font hide"></i>
-                                            <span class="caption-subject font-blue-madison bold uppercase">Profile Account</span>
+                                            <span class="caption-subject font-blue-madison bold uppercase">Profile Account</span>                                            
                                         </div>
                                         
                                     </div>
@@ -123,8 +140,9 @@
                                         <div class="tab-content">
                                             <!-- PERSONAL INFO TAB -->
                                             <div class="tab-pane active" id="tab_1_1">
-                                                <form role="form" action="#">                                                   
-
+                                                <form role="form" action="{% url 'staff:view-staff' record.id %}" method="POST">                                                   
+                                                    {% csrf_token %}
+                                                    <input type="text" class="form-control" value="{{record.id}}" hidden name="staff_id">
                                                     <div class="form-group"> 
                                                         <div class="row">
                                                             <div class="col-md-6">
@@ -225,13 +243,15 @@
                                                     
                                                     <div class="form-group">
                                                         <label class="control-label">About</label>
-                                                        <textarea class="form-control" rows="3" ></textarea>
-                                                    </div>
-                                                    
+                                                        <textarea class="form-control" rows="3" name="about" >{{record.about}}</textarea>
+                                                    </div>                                                    
                                                     <hr>                                                    
-                                                    <div class="margiv-top-10">
-                                                        <a href="javascript:;" class="btn green"> Save Changes </a>
-                                                        <a href="javascript:;" class="btn default"> Cancel </a>
+                                                    <div class="col-md-12">
+                                                        <div class="form-body">
+                                                        <div class="form-actions">
+                                                            <button type="submit" class="btn green">Update</button>                                                            
+                                                        </div>
+                                                        </div>
                                                     </div>
                                                 </form>
                                             </div>
