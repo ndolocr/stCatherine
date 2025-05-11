@@ -19,10 +19,14 @@ def userLogin(request):
         password = request.POST.get('password', None)
         identifier = request.POST.get('username', None)
 
+        print(f"Username --> {identifier}")
+        print(f"Passowrd --> {password}")
         try:
             user = User.objects.get(username=identifier)
+            print(f"User found --> {user}")
             authenticated_user = authenticate(request, username=user.username, password=password)                                
-            
+            print(f"Authenticated User --> {authenticated_user}")
+
             if authenticated_user is not None:
                 print(user.email)
                 print("User Authenticated")
@@ -51,11 +55,13 @@ def userLogin(request):
             #     current_year = datetime.now().year
             #     context = {"current_year": current_year,"error_message": "Invalid Email or Password"}
             #     return render(request, 'authentication/login.html', context=context)
-        except User.DoesNotExist:
+        except User.DoesNotExist as u:
+            print(f"Error occured while retrieving user --> {u}")
             current_year = datetime.now().year
             context = {"current_year": current_year,"error_message": "Invalid Email or Password"}
             return render(request, 'authentication/login.html', context=context)
         except Exception as e:
+            print(f"Error occured while logging in --> {e}")
             current_year = datetime.now().year
             context = {"current_year": current_year,"error_message": "Invalid Email or Password"}
             return render(request, 'authentication/login.html', context=context)

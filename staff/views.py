@@ -2,16 +2,23 @@ from datetime import datetime
 
 from django.shortcuts import render
 from django.shortcuts import redirect
+from django.contrib.auth.hashers import make_password
 from django.contrib.auth.decorators import login_required
 
 from staff.models import Staff
 from staff.models import StaffType
 
+from user_management.models import User
+
+from audit_trail.models import StaffAuditTrail
 from audit_trail.models import StaffTypeAuditTrail
 
 from utils.form_validation import validate_name
 from utils.form_validation import validate_email
+from utils.form_validation import validate_gender
 from utils.form_validation import validate_phone_num
+
+from utils.user_name import generate_unique_username
 
 # Create your views here.
 @login_required(login_url='login')
@@ -222,7 +229,7 @@ def get_staff_type_record(id):
 @login_required(login_url='login')
 def view_all(request):
     try:
-        records = Staff.objects.all().order_by('-created_on')
+        records = Staff.objects.all().order_by('-date_joined')
 
         context = {
             "records": records,
@@ -237,7 +244,7 @@ def view_all(request):
             "subtitle": "View All",
             "staff_open":"open",
             "staff_active":"active",
-            "error_message": "Unable to retrieve Staff records!"
+            "error_message": f"Unable to retrieve Staff records -> {e}!"
         }
 
     return render(request, 'staff/view_all.html', context)
@@ -284,7 +291,8 @@ def create_staff(request):
     elif request.method =="POST":        
         town = request.POST.get('town', None)
         phone = request.POST.get('phone', None)
-        email = request.POST.get('email', None)        
+        email = request.POST.get('email', None)
+        gender = request.POST.get('gender', None)
         address = request.POST.get('address', None)
         last_name = request.POST.get('last_name', None)
         first_name = request.POST.get('first_name', None)        
@@ -299,6 +307,7 @@ def create_staff(request):
         print(f"town --> {town}")
         print(f"phone --> {phone}")
         print(f"email --> {email}")
+        print(f"gender --> {gender}")
         print(f"address --> {address}")
         print(f"last_name --> {last_name}")
         print(f"first_name --> {first_name}")
@@ -337,12 +346,16 @@ def create_staff(request):
             context["form_error"] = "Invalid town"
             return render(request, "staff/create_staff.html", context)
         
-        if not phone or not validate_phone_num(phone):
+        if not phone:
             context["form_error"] = "Invalid Phone Number. Phone No. should be 12 digits (254 712 345 678)"
             return render(request, "staff/create_staff.html", context)
         
         if not validate_email(email):
             context["form_error"] = "Invalid email"
+            return render(request, "staff/create_staff.html", context)
+        
+        if not gender or not validate_gender(gender):
+            context["form_error"] = "Invalid gender"
             return render(request, "staff/create_staff.html", context)
         
         if not last_name or not validate_name(last_name):
@@ -369,25 +382,71 @@ def create_staff(request):
         if not identification_document_number:
             context["form_error"] = "Identification document number required"
             return render(request, "staff/create_staff.html", context)
-            
+        
+        print("Validation Successful")
         # Create Staff Information
+        password = f"({last_name}.{first_name})"
+        username = generate_unique_username(first_name, last_name)
+
         try:
-            staff = Staff.objects.create(
+            user = User.objects.create(
                 town = town,
-                phone = phone,
-                email = email,
+                email=email,
+                phone=phone,
+                gender=gender,
+                is_staff = True,
+                is_active = True,
                 address = address,
-                last_name = last_name,
-                first_name = first_name,
-                date_joined = date_joined,
-                middle_name = middle_name,
-                staff_number = staff_number,
-                staff_type = staff_type,
+                username=username,
+                last_name=last_name,
+                first_name=first_name,
+                middle_name=middle_name,                
+                password=make_password(password),
                 identification_document = identification_document,
                 identification_document_number = identification_document_number,
+                
             )
 
-            # redirect to function to view all staff
+            staff = Staff.objects.create(
+                user = user,
+                created_by = request.user,               
+                date_joined = date_joined,
+                staff_number = staff_number,               
+            )
+            staff.staff_types.set(staff_type)
+
+
+            staff_type_names = list(StaffType.objects.filter(id__in=staff_type).values_list('name', flat=True))
+
+            # Create Audit trail for creating staff record
+            staff_record = f"""
+            Last Name: {last_name}     | Email:{email}         | Phone: {phone}     | Is Active {user.is_active}
+            First Name: {first_name}   | Gender: {gender}      | Address: {address} | Is Staff: {user.is_staff}
+            Middle Name: {middle_name} | Username: {username}  | Town: {town}
+            <hr>       
+            ID Num: {identification_document_number} 
+            ID Doc: {identification_document}
+            Sfatt Type {staff_type_names}
+            """
+            try:
+                audit_trail = StaffAuditTrail.objects.create(
+                    staff = staff,
+                    action = "Create",
+                    action_by = request.user,
+                    description = staff_record                
+                )
+            except Exception as e:
+                context = {
+                    "title": "Staff",
+                    "subtitle": "Create",
+                    "staff_open":"open",
+                    "staff_active":"active",
+                    "new_staff_number": new_staff_number,
+                    "staff_type_records": staff_type_records,
+                    "form_error": f"Error occured while Audit information. -- {e}"
+                }            
+            
+            return redirect('staff:view-all')
         except Exception as e:
             print("==========================================")
             print(f"The following error occured while saving staff record. --> {e}")
@@ -403,3 +462,21 @@ def create_staff(request):
             }
 
             return render(request, "staff/create_staff.html", context)
+        
+def view_staff(request, id):
+    if request.method == "GET":
+        record = Staff.objects.get(id=id)
+        staff_type_records = StaffType.objects.all()
+        assigned_types = record.staff_types.values_list('id', flat=True)
+
+        date_joined= record.date_joined.strftime('%Y-%m-%d') if record.date_joined else ''
+        
+        context = {
+            "record":record,
+            "date_joined": date_joined,
+            "assigned_types": assigned_types,
+            "staff_type_records": staff_type_records,
+        }
+        return render(request, "staff/view_staff.html", context)
+    elif request.method == "POST":
+        pass

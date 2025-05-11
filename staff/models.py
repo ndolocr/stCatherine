@@ -22,6 +22,7 @@ class Staff(models.Model):
     class Meta:
         db_table = 'staff'
     
+    about = models.TextField(null=True, blank=True)
     date_joined = models.DateField(blank=True, null=True)    
     staff_number = models.CharField(max_length=255, blank=True, null=True)
     staff_types = models.ManyToManyField(StaffType, related_name='staff_type_members')
