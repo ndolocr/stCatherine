@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from audit_trail.models import StaffAuditTrail
 from audit_trail.models import StaffTypeAuditTrail
 
+from staff.models import Staff
 from staff.models import StaffType
 # Create your views here.
 
@@ -105,3 +106,35 @@ def view_audit_for_all_staff(request):
             "error_message": "Error Experienced fetching Audit Trail record"
         }
     return render(request, 'audit_trail/view_all.html', context)
+
+@login_required(login_url='login')
+def view_audit_for_single_staff(request, id):
+    print("=================================================")
+    print(f"Audit Trail -- > Fecth")
+    print("=================================================")
+    try:
+        staff = Staff.objects.get(id=id)
+        records = StaffAuditTrail.objects.filter(staff = staff).order_by('-created_on')        
+
+        if records:
+            print("=================================================")
+            print(f"Record -- > {records}")
+            print("=================================================")
+            context = {
+                "staff": staff,
+                "records": records,
+                "staff_open":"open",                
+                "staff_active":"active",
+            }
+        else:
+            context = {"error_message": "No Audit Trail for record"}
+    except Exception as e:
+        print("=================================================")
+        print(f"Error Occured while retrieving Audit Trail -- > {e}")
+        print("=================================================")
+        context = {
+            "staff_open":"open",
+            "staff_active":"active",
+            "error_message": "Error Experienced fetching Audit Trail record"
+        }
+    return render(request, 'audit_trail/view_audit.html', context)

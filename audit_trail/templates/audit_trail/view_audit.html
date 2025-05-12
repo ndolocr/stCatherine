@@ -6,7 +6,7 @@
     <div class="portlet box blue-hoki">
         <div class="portlet-title">
             <div class="caption">
-                <i class="fa fa-cogs"></i>Audit Trail for: - <small><b>{{staff_type.name}} Staff</b></small> </div>
+                <i class="fa fa-cogs"></i>Audit Trail </div>
             <div class="tools">
                 <a href="javascript:;" class="collapse"> </a>                
                 <!-- <a href="javascript:;" class="remove"> </a> -->
@@ -60,6 +60,44 @@
 
                             {% if record.action == "Delete" %}
                                 <div class="alert alert-danger" role="alert">
+                                    <div class="row">
+                                        <div class="col-md-3" style="border-right: solid 1px #f1aeb5;">
+                                            <small>
+                                                <i class="fa fa-trash"></i> - {{record.action}} <br> 
+                                                <i class="fa fa-user"></i> - {{record.action_by}} <br>
+                                                <i class="fa fa-calendar"></i> - {{record.created_on}}
+                                            </small> 
+                                        </div>
+                                        <div class="col-md-9">
+                                            <b><u>Description</u></b> <br>
+                                            <small>{{record.description|safe}}</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                            {% endif %}
+
+                            {% if record.action == "Activate" %}
+                                <div class="alert alert-info" role="alert">
+                                    <div class="row">
+                                        <div class="col-md-3" style="border-right: solid 1px #f1aeb5;">
+                                            <small>
+                                                <i class="fa fa-trash"></i> - {{record.action}} <br> 
+                                                <i class="fa fa-user"></i> - {{record.action_by}} <br>
+                                                <i class="fa fa-calendar"></i> - {{record.created_on}}
+                                            </small> 
+                                        </div>
+                                        <div class="col-md-9">
+                                            <b><u>Description</u></b> <br>
+                                            <small>{{record.description|safe}}</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                            {% endif %}
+                            
+                            {% if record.action == "Deactivate" %}
+                                <div class="alert alert-warning" role="alert">
                                     <div class="row">
                                         <div class="col-md-3" style="border-right: solid 1px #f1aeb5;">
                                             <small>
