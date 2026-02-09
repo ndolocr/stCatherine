@@ -36,15 +36,16 @@ class UserModuleManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     class Meta:
-        db_table = 'user_management'
+        db_table = 'user_management'        
 
     password = models.CharField(max_length=255)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)    
-    date_activated = models.DateTimeField(auto_now_add=True)
+    date_activated = models.DateTimeField(auto_now_add=True)    
     town = models.CharField(max_length=255, blank=True, null=True)
     phone = models.CharField(max_length=255, blank=True, null=True)
-    gender = models.CharField(max_length=10, blank=True, null=True) 
+    gender = models.CharField(max_length=10, blank=True, null=True)
+    date_of_birth = models.DateTimeField(auto_now=False, null=True) 
     email = models.EmailField(max_length=255, blank=True, null=True)   
     address = models.CharField(max_length=255, blank=True, null=True)
     last_name = models.CharField(max_length=255, blank=True, null=True)

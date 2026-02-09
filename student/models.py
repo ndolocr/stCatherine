@@ -7,6 +7,7 @@ class Student(models.Model):
         db_table = 'student'
           
     admitted_on = models.DateField(blank=True, null=True)
+    blood_group = models.CharField(max_length=255, blank=True, null=True)
     admission_number = models.CharField(max_length=255, blank=True, null=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='student_user')
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='student_created_by')
