@@ -25,7 +25,7 @@ class Staff(models.Model):
     about = models.TextField(null=True, blank=True)
     date_joined = models.DateField(blank=True, null=True)    
     staff_number = models.CharField(max_length=255, blank=True, null=True)
-    staff_types = models.ManyToManyField(StaffType, related_name='staff_type_members')
+    staff_types = models.ManyToManyField(StaffType, related_name='staff_staff_type')
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='staff_user')
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='staff_created_by', blank=False, null=False)
 

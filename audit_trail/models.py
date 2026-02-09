@@ -13,8 +13,8 @@ class StaffTypeAuditTrail(models.Model):
         
     description = models.TextField(blank=False, null=False)
     action = models.CharField(max_length=255, blank=False, null=False)
-    action_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='action_by', blank=False, null=False)
-    staff_type = models.ForeignKey(StaffType, on_delete=models.CASCADE, related_name='staff_type', blank=False, null=False)
+    action_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='staff_type_audit_trail_action_by', blank=False, null=False)
+    staff_type = models.ForeignKey(StaffType, on_delete=models.CASCADE, related_name='staff_type_audit_trail_staff_type', blank=False, null=False)
 
     updated_on = models.DateTimeField(auto_now=True)
     created_on = models.DateTimeField(auto_now_add=True)
@@ -25,8 +25,8 @@ class StaffAuditTrail(models.Model):
         
     description = models.TextField(blank=False, null=False)
     action = models.CharField(max_length=255, blank=False, null=False)    
-    staff = models.ForeignKey(Staff, on_delete=models.CASCADE, related_name='staff', blank=False, null=False)
-    action_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='staff_action_by', blank=False, null=False)
+    staff = models.ForeignKey(Staff, on_delete=models.CASCADE, related_name='staff_audit_trail_staff', blank=False, null=False)
+    action_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='staff_audit_trail_action_by', blank=False, null=False)
 
     updated_on = models.DateTimeField(auto_now=True)
     created_on = models.DateTimeField(auto_now_add=True)

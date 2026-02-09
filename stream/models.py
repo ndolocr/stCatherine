@@ -11,5 +11,5 @@ class Stream(models.Model):
     updated_on = models.DateTimeField(auto_now=True)
     created_on = models.DateTimeField(auto_now_add=True)
     name = models.CharField(max_length=255, blank=True, null=True)    
-    created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='created_by')
-    student_level = models.ForeignKey(StudentLevel, on_delete=models.CASCADE, related_name='class')
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='stream_created_by')
+    student_level = models.ForeignKey(StudentLevel, on_delete=models.CASCADE, related_name='stream_student_level')

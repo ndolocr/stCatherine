@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     # Custom Apps
     'staff',
+    'stream',
     'parent',
     'student',    
     'dashboard',

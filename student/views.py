@@ -24,12 +24,12 @@ def create(request):
         new_admission_number = int(last_admitted_student.admission_number) + 1
     except Exception as e:
         print("==========================================")
-        print(f"Error getting student record to generate next admission number --> {last_admitted_student}")
+        print(f"Error getting student record to generate next admission number --> {e}")
         print("==========================================")
         new_admission_number = 1
 
     print("==========================================")
-    print(f"Last Addmitted student --> {last_admitted_student}")
+    # print(f"Last Addmitted student --> {last_admitted_student}")
     print(f"Their Admission Number --> {new_admission_number}")
     print("==========================================")
 
